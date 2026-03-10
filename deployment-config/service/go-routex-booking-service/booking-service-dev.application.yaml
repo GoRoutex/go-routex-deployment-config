@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: go-routex-booking-service
+  namespace: argocd
+  annotations:
+    # 1) Image cần theo dõi trên GHCR
+    argocd-image-updater.argoproj.io/image-list: |
+      booking=ghcr.io/goroutex/go-routex-booking-service
+
+    # 2) Chỉ lấy tag dạng vX.Y.Z
+    argocd-image-updater.argoproj.io/booking.allow-tags: "regexp:^v\\d+\\.\\d+\\.\\d+$"
+
+    # 3) Chọn tag mới nhất theo semver
+    argocd-image-updater.argoproj.io/booking.update-strategy: semver
+
+    # 4) Ghi lại về GitOps repo
+    argocd-image-updater.argoproj.io/write-back-method: git
+
+    # 5) File values để image-updater sửa
+    argocd-image-updater.argoproj.io/write-back-target: helmvalues:deployment-config/service/go-routex-booking-service/values-dev.yaml
+
+  labels:
+    app: go-routex-booking-service
+    env: dev
+
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/GoRoutex/go-routex-deployment-config.git
+    targetRevision: master
+    path: deployment-config
+    helm:
+      releaseName: go-routex-booking-service
+      valueFiles:
+        - service/go-routex-booking-service/values-dev.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: orion-dev
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
