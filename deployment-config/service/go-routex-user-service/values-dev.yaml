@@ -2,12 +2,12 @@ nameOverride: user
 fullnameOverride: go-routex-user-service
 replicaCount: 2
 image:
-  repository: registry.gitlab.com/orion-hub/routex-hub-user-service
+  repository: ghcr.io/goroutex/routex-hub-user-service
   tag: "v0.0.11" # sẽ được cập nhật theo tag/sha
   pullPolicy: IfNotPresent
 containerPort: 8080
 imagePullSecrets:
-  - name: gitlab-registry
+  - name: ghcr-secret
 serviceAccount:
   create: true
   name: routex-hub-user-sa

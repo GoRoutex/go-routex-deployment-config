@@ -1,11 +1,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: go-routex-user-service
+  name: go-routex-payment-service
   namespace: argocd
   annotations:
     argocd-image-updater.argoproj.io/image-list: |
-      user=ghcr.io/goroutex/routex-hub-user-service
+      user=ghcr.io/goroutex/routex-hub-payment-service
 
     # 2) Chỉ lấy tag dạng vX.Y.Z
     argocd-image-updater.argoproj.io/user.allow-tags: "regexp:^v\\d+\\.\\d+\\.\\d+$"
@@ -17,9 +17,9 @@ metadata:
     argocd-image-updater.argoproj.io/write-back-method: git
 
     # 5) File values để image-updater sửa (phải TRÙNG file bạn đang dùng)
-    argocd-image-updater.argoproj.io/write-back-target: helmvalues:deployment-config/service/go-routex-user-service/values-dev.yaml
+    argocd-image-updater.argoproj.io/write-back-target: helmvalues:deployment-config/service/go-routex-payment-service/values-dev.yaml
   labels:
-    app: go-routex-user-service
+    app: go-routex-payment-service
     env: dev
 spec:
   project: default
@@ -29,9 +29,9 @@ spec:
     targetRevision: master
     path: deployment-config
     helm:
-      releaseName: go-routex-user-service
+      releaseName: go-routex-payment-service
       valueFiles:
-        - service/go-routex-user-service/values-dev.yaml
+        - service/go-routex-payment-service/values-dev.yaml
 
   destination:
     server: https://kubernetes.default.svc

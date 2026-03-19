@@ -6,7 +6,7 @@ metadata:
   annotations:
     # 1) Image cần theo dõi
     argocd-image-updater.argoproj.io/image-list: |
-      management=registry.gitlab.com/orion-hub/routex-hub-management-service
+      management=ghcr.io/goroutex/routex-hub-management-service
 
     # 2) Chỉ lấy tag dạng vX.Y.Z
     argocd-image-updater.argoproj.io/driver.allow-tags: "regexp:^v\\d+\\.\\d+\\.\\d+$"
