@@ -23,10 +23,17 @@ env:
     value: "jdbc:postgresql://postgresql.postgresql.svc.cluster.local:5432/routex"
   - name: SPRING_DATASOURCE_USERNAME
     value: routex
+  - name: REDIS_HOST
+    value: redis
+  - name: KAFKA_BOOTSTRAP_SERVER
+    value: kafka:9092
 envFromSecret:
   - name: SPRING_DATASOURCE_PASSWORD
     secretName: postgresql-secret
     key: POSTGRES_PASSWORD
+  - name: JWT_SECRET
+    secretName: jwt-secret
+    key: JWT_SECRET
 resources:
   requests:
     cpu: 500m
